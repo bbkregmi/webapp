@@ -20,7 +20,9 @@
             "@angular/*": [
                 "../node_modules/@angular/*"
             ]
-        }
+        },
+        "allowJs": true,
+        "types": ["core-js"]
     },
     "include": [
         "src/main/webapp/app",
