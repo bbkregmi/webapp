@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Router } from '@angular/router';
+import { Blog } from '../blog/blog.model';
 import { Account, LoginModalService, Principal, LoginService } from '../../shared';
+import { BlogService } from '../blog';
 
 @Component({
     selector: 'jhi-user-home',
@@ -11,10 +13,13 @@ import { Account, LoginModalService, Principal, LoginService } from '../../share
 export class UserHomeComponent implements OnInit {
 
     account: Account;
+    blogs: Blog[];
 
     constructor(
         private principal: Principal,
         private eventManager: JhiEventManager,
+        private blogService: BlogService,
+        private jhiAlertService: JhiAlertService,
     ) {
     }
 
@@ -22,6 +27,9 @@ export class UserHomeComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+
+        this.blogService.query()
+            .subscribe((res: HttpResponse<Blog[]>) => { this.blogs = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.registerAuthenticationSuccess();
     }
 
@@ -35,5 +43,9 @@ export class UserHomeComponent implements OnInit {
 
     isAuthenticated() {
         return this.principal.isAuthenticated();
+    }
+
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
     }
 }

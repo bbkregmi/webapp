@@ -1,0 +1,44 @@
+
+<div *ngIf="blogEntry">
+    <h2><span>Blog Entry</span> {{blogEntry.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Title</span></dt>
+        <dd>
+            <span>{{blogEntry.title}}</span>
+        </dd>
+        <dt><span>Text</span></dt>
+        <dd>
+            <span>{{blogEntry.text}}</span>
+        </dd>
+        <dt><span>Creation Date</span></dt>
+        <dd>
+            <span>{{blogEntry.creationDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>Last Modified</span></dt>
+        <dd>
+            <span>{{blogEntry.lastModified | date:'medium'}}</span>
+        </dd>
+        <dt><span>Blog</span></dt>
+        <dd>
+            <div *ngIf="blogEntry.blog">
+                <a [routerLink]="['/blog', blogEntry.blog?.id]">{{blogEntry.blog?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'blog-entry/'+ blogEntry.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
